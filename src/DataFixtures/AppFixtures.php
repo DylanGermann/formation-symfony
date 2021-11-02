@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Role;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,6 +22,20 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('FR-fr');
+        $adminRole = new Role();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        $adminUser = new User();
+        $adminUser->setFirstName('Dylan')
+                    ->setLastName('Germann')
+                    ->setEmail('dylan.test@test.fr')
+                    ->setHash($this->encoder->hashPassword($adminUser, 'password'))
+                    ->setPicture('https://us.123rf.com/450wm/kritchanut/kritchanut1401/kritchanut140100054/25251050-photo-de-profil-d-affaires-de-l-avatar.jpg?ver=6')
+                    ->setIntroduction($faker->sentence())
+                    ->setDescription('<p>' . implode("</p><p>", $faker->paragraphs(3)) . '</p>')
+                    ->addUserRole($adminRole);
+        $manager->persist($adminUser);
         //Nous gérons les utilisateurs
         $users = [];
         $genres = ['male', 'female'];
