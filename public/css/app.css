@@ -27,3 +27,9 @@ div.carousel-caption {
     max-width: 24px;
     max-height: 24px;
 }
+td.day{
+    color: green;
+}
+td.disabled.disabled-date.day {
+    color: firebrick;
+}
