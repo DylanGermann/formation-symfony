@@ -2,9 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\BookingRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PreUpdate;
+use App\Repository\BookingRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,7 +35,7 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\GreaterThan("today")
+     * @Assert\GreaterThan("today", groups={"front"})
      * @Assert\Type("\DateTimeInterface", message="Votre date doit être au bon format !")
      */
     private $startDate;
@@ -152,7 +153,8 @@ class Booking
 
     /**
      * Callback appelé à chaque fois qu'on créé une réservation
-     *@ORM\PrePersist
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      * @return void
      */
     public function prePersist()
