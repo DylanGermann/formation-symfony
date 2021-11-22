@@ -14,10 +14,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(
- * fields={"emails"}
- * message="Cette adresse email est déja liée a un compte"
- * )
  */
 class User implements UserInterface
 {
@@ -206,7 +202,8 @@ class User implements UserInterface
 
         return $this;
     }
-    public function getFullName() {
+    public function getFullName()
+    {
         return "{$this->firstName} {$this->lastName}";
     }
 
@@ -239,7 +236,7 @@ class User implements UserInterface
 
         return $this;
     }
-     /**
+    /**
      * Permet d'initialiser le slug !
      * @ORM\PrePersist
      * @ORM\PreUpdate
@@ -248,14 +245,14 @@ class User implements UserInterface
      */
     public function initializeSlug()
     {
-        if(empty($this->slug)) {
+        if (empty($this->slug)) {
             $slugify = new Slugify();
-            $this->slug = $slugify->slugify($this->firstName . ' ' . $this->lastName) ;
+            $this->slug = $slugify->slugify($this->firstName . ' ' . $this->lastName);
         }
     }
-    public function getRoles() 
+    public function getRoles()
     {
-        $roles = $this->userRoles->map(function($role){
+        $roles = $this->userRoles->map(function ($role) {
             return $role->getTitle();
         })->toArray();
         $roles[] = 'ROLE_USER';
@@ -265,7 +262,9 @@ class User implements UserInterface
     {
         return $this->hash;
     }
-    public function getSalt() {}
+    public function getSalt()
+    {
+    }
     public function getUsername()
     {
         return $this->email;
@@ -276,7 +275,6 @@ class User implements UserInterface
     }
     public function eraseCredentials()
     {
-        
     }
 
     /**
